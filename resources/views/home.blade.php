@@ -596,7 +596,7 @@ html {
             Cepat, rapi, dan nggak bikin pusing!
         </div>
         <div class="hero-btns">
-            <a href="{{ url('/login') }}" class="hero-btn primary">Get Started</a>
+            <a href="{{ route('login') }}" class="hero-btn primary">Get Started</a>
             <a href="#about" class="hero-btn secondary">Learn More</a>
         </div>
 
