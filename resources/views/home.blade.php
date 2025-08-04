@@ -296,4 +296,3 @@
     </section>
 </div>
 <!-- Pastikan Bootstrap Icons sudah di-load di layout utama -->
-@endsection
