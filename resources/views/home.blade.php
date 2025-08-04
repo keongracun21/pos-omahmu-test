@@ -1,8 +1,3 @@
-@extends('layouts.app')
-
-@section('title', 'Aplikasi Point Of Sale')
-
-@section('content')
 <style>
     html,
     body {
