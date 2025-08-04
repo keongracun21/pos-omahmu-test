@@ -61,3 +61,5 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
     // Tambahkan route authenticated lainnya di sini
 });
+
+Route::post('/subscribe', [App\Http\Controllers\SubscribeController::class, 'store']);
