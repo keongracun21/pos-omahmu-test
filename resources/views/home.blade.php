@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
 @extends('layouts.app')
 
 @section('title', 'Aplikasi Point Of Sale ')
 
 @section('content')
->>>>>>> dcacef8 (Update total)
 <style>
 html,
 body {
@@ -596,7 +593,7 @@ html {
             Cepat, rapi, dan nggak bikin pusing!
         </div>
         <div class="hero-btns">
-            <a href="{{ route('login') }}" class="hero-btn primary">Get Started</a>
+            <a href="{{ url('/login') }}" class="hero-btn primary">Get Started</a>
             <a href="#about" class="hero-btn secondary">Learn More</a>
         </div>
 
@@ -831,8 +828,4 @@ html {
     };
     </script>
 </div>
-<<<<<<< HEAD
-<!-- Pastikan Bootstrap Icons sudah di-load di layout utama -->
-=======
 @endsection
->>>>>>> dcacef8 (Update total)
