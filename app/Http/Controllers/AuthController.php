@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
@@ -18,17 +19,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required', // ini menerima email dari form
+            'username' => 'required', // Ini menerima email dari form Anda
             'password' => 'required',
         ]);
 
-        // Cari user berdasarkan email
-        $user = User::where('email', $request->username)->first();
+        // Cari user berdasarkan email (sesuai form Anda)
+        $user = DB::table('users')
+            ->where('email', $request->username)
+            ->first();
 
         // Verifikasi password
         if ($user && Hash::check($request->password, $user->password)) {
             // Login menggunakan Auth Laravel dengan primary key user_id
-            Auth::login($user);
+            $authUser = User::find($user->user_id);
+            Auth::login($authUser);
 
             // Simpan data tambahan di session
             Session::put('user_id', $user->user_id);
