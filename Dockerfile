@@ -2,7 +2,7 @@ FROM php:8.2-apache
 
 # Install PHP extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl libonig-dev libxml2-dev \
+    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl libonig-dev libxml2-dev nodejs npm \
     && docker-php-ext-install pdo pdo_mysql mbstring gd
 
 # Enable Apache rewrite
@@ -21,8 +21,11 @@ COPY . .
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
+
+# Install Node dependencies dan build assets
+RUN npm install && npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
