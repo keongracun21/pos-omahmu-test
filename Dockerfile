@@ -1,36 +1,32 @@
+# Stage 1: Build assets
+FROM node:20 AS node-builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: PHP + Apache
 FROM php:8.2-apache
 
-# Install PHP extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl libonig-dev libxml2-dev nodejs npm \
-    && docker-php-ext-install pdo pdo_mysql mbstring gd
+    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring gd \
+    && a2enmod rewrite
 
-# Enable Apache rewrite
-RUN a2enmod rewrite
-
-# Set Apache DocumentRoot ke folder public Laravel
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
- && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
-
-# Set working directory
 WORKDIR /var/www/html
-
-# Copy Laravel files
-COPY . .
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install PHP dependencies
-RUN composer install --optimize-autoloader --no-dev
+# Copy Laravel code
+COPY . .
 
-# Install Node dependencies dan build assets
-RUN npm install && npm run build
+# Copy build assets dari stage node
+COPY --from=node-builder /app/public/build ./public/build
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN composer install --optimize-autoloader --no-dev \
+    && chown -R www-data:www-data storage bootstrap/cache
 
-# Expose port
 EXPOSE 80
-
 CMD ["apache2-foreground"]
