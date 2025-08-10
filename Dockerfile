@@ -1,5 +1,3 @@
-Jalan kan npm run build / npm run dev di dockerfile saya :
-
 FROM php:8.2-apache
 
 # Install PHP extensions
