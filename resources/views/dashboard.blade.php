@@ -3,10 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<!-- Custom CSS -->
-<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <div class="d-flex vh-100">
     <!-- Sidebar -->
