@@ -25,20 +25,21 @@ $imagePath = null;
 // Menyimpan gambar ke storage
 if ($request->hasFile('gambar_produk')) {
     $destinationPath = public_path('img');
+
     if (!file_exists($destinationPath)) {
         mkdir($destinationPath, 0755, true);
     }
 
-    // Ambil nama asli file (dengan ekstensi)
+    // Ambil nama asli file
     $fileName = $request->file('gambar_produk')->getClientOriginalName();
 
-    // Ubah spasi menjadi tanda minus (opsional)
-    $fileName = str_replace(' ', '-', strtolower($fileName));
+    // Rapikan nama: lowercase dan ganti spasi jadi strip
+    $fileName = strtolower(str_replace(' ', '-', $fileName));
 
-    // Pindahkan ke public/img
+    // Pindahkan file ke public/img
     $request->file('gambar_produk')->move($destinationPath, $fileName);
 
-    // Simpan path relatif
+    // Path relatif untuk disimpan di DB
     $imagePath = 'img/' . $fileName;
 }
 
@@ -47,7 +48,7 @@ StokMenu::create([
     'nama_menu' => $request->input('nama_menu'),
     'harga' => $request->input('harga'),
     'kuantitas' => $request->input('kuantitas'),
-    'gambar_produk' => $imagePath,
+    'gambar_produk' => $imagePath ?? null,
     'jenis_menu' => $request->input('jenis_menu'),
 ]);
 
