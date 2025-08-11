@@ -65,7 +65,7 @@
                             <img src="{{ asset('storage/' . $menu->gambar_produk) }}"
                                 alt="{{ $menu->nama_menu }}"
                                 style="width: 100%; height: 100px; border-radius: 6px; cursor: pointer;"
-                                onclick="selectMenu('{{ $menu->nama_menu }}', '{{ $menu->harga }}', '{{ asset('storage/' . $menu->gambar_produk) }}')">
+                                onclick="selectMenu('{{ $menu->nama_menu }}', '{{ $menu->harga }}', '{{ secure_asset('storage/' . $menu->gambar_produk) }}')">
 
                             <!-- Tombol hapus di pojok kanan atas -->
                             <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
