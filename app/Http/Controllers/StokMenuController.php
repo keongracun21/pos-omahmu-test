@@ -39,19 +39,18 @@ if ($request->hasFile('gambar_produk')) {
     // Pindahkan file ke public/img
     $request->file('gambar_produk')->move($destinationPath, $fileName);
 
-    // Path relatif untuk disimpan di DB
-    $imagePath = 'img/' . $fileName;
+    // Simpan di DB hanya nama file (tanpa 'img/')
+    $imageName = $fileName;
 }
 
-// Menyimpan data ke tabel stok_menu
-StokMenu::create([
-    'nama_menu' => $request->input('nama_menu'),
-    'harga' => $request->input('harga'),
-    'kuantitas' => $request->input('kuantitas'),
-    'gambar_produk' => $imagePath ?? null,
-    'jenis_menu' => $request->input('jenis_menu'),
-]);
 
+StokMenu::create([
+    'nama_menu'     => $request->input('nama_menu'),
+    'harga'         => $request->input('harga'),
+    'kuantitas'     => $request->input('kuantitas'),
+    'gambar_produk' => $imageName ?? null, // hanya nama file
+    'jenis_menu'    => $request->input('jenis_menu'),
+]);
 
 
         // Redirect atau response setelah berhasil menyimpan
