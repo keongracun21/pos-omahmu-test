@@ -19,21 +19,39 @@ class StokMenuController extends Controller
             'harga' => 'required|numeric|min:1000',
         ]);
 
-        // Menyimpan gambar ke storage
-        if ($request->hasFile('gambar_produk')) {
-            $fileName = time() . '.' . $request->file('gambar_produk')->getClientOriginalExtension();
-            $request->file('gambar_produk')->move(public_path('img'), $fileName);
-            $imagePath = 'img/' . $fileName; // path relatif
-        }
+        // Pastikan variabel imagePath ada walau tidak ada file di-upload
+$imagePath = null;
 
-        // Menyimpan data ke tabel stok_menu
-        StokMenu::create([
-            'nama_menu' => $request->input('nama_menu'),
-            'harga' => $request->input('harga'),
-            'kuantitas' => $request->input('kuantitas'),
-            'gambar_produk' => $imagePath ?? null,  // Menyimpan path gambar
-            'jenis_menu' => $request->input('jenis_menu'),
-        ]);
+// Menyimpan gambar ke storage
+if ($request->hasFile('gambar_produk')) {
+    $destinationPath = public_path('img');
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+
+    // Ambil nama asli tanpa ekstensi
+    $originalName = pathinfo($request->file('gambar_produk')->getClientOriginalName(), PATHINFO_FILENAME);
+    $extension = $request->file('gambar_produk')->getClientOriginalExtension();
+
+    // Buat nama unik: timestamp + nama asli
+    $fileName = time() . '-' . str_replace(' ', '-', strtolower($originalName)) . '.' . $extension;
+
+    // Pindahkan ke public/img
+    $request->file('gambar_produk')->move($destinationPath, $fileName);
+
+    // Simpan path relatif
+    $imagePath = 'img/' . $fileName;
+}
+
+// Menyimpan data ke tabel stok_menu
+StokMenu::create([
+    'nama_menu' => $request->input('nama_menu'),
+    'harga' => $request->input('harga'),
+    'kuantitas' => $request->input('kuantitas'),
+    'gambar_produk' => $imagePath,
+    'jenis_menu' => $request->input('jenis_menu'),
+]);
+
 
         // Redirect atau response setelah berhasil menyimpan
         return redirect()->route('dashboard')->with('success', 'Menu berhasil ditambahkan!');
