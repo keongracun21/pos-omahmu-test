@@ -21,7 +21,9 @@ class StokMenuController extends Controller
 
         // Menyimpan gambar ke storage
         if ($request->hasFile('gambar_produk')) {
-            $imagePath = $request->file('gambar_produk')->store('images', 'public');
+            $fileName = time() . '.' . $request->file('gambar_produk')->getClientOriginalExtension();
+            $request->file('gambar_produk')->move(public_path('img'), $fileName);
+            $imagePath = 'img/' . $fileName; // path relatif
         }
 
         // Menyimpan data ke tabel stok_menu
