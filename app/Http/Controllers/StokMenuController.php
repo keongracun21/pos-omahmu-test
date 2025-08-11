@@ -29,12 +29,11 @@ if ($request->hasFile('gambar_produk')) {
         mkdir($destinationPath, 0755, true);
     }
 
-    // Ambil nama asli tanpa ekstensi
-    $originalName = pathinfo($request->file('gambar_produk')->getClientOriginalName(), PATHINFO_FILENAME);
-    $extension = $request->file('gambar_produk')->getClientOriginalExtension();
+    // Ambil nama asli file (dengan ekstensi)
+    $fileName = $request->file('gambar_produk')->getClientOriginalName();
 
-    // Buat nama unik: timestamp + nama asli
-    $fileName = time() . '-' . str_replace(' ', '-', strtolower($originalName)) . '.' . $extension;
+    // Ubah spasi menjadi tanda minus (opsional)
+    $fileName = str_replace(' ', '-', strtolower($fileName));
 
     // Pindahkan ke public/img
     $request->file('gambar_produk')->move($destinationPath, $fileName);
@@ -51,6 +50,7 @@ StokMenu::create([
     'gambar_produk' => $imagePath,
     'jenis_menu' => $request->input('jenis_menu'),
 ]);
+
 
 
         // Redirect atau response setelah berhasil menyimpan
