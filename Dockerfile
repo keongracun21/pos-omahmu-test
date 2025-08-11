@@ -27,8 +27,10 @@ RUN composer install --optimize-autoloader --no-dev
 # Install Node dependencies dan build assets
 RUN npm install && npm run build
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Set permissions untuk Laravel dan folder upload
+RUN mkdir -p /var/www/html/public/img \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/img \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/img
 
 # Expose port
 EXPOSE 80
