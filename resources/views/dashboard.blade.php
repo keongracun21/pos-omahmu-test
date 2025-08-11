@@ -307,7 +307,7 @@
 </div>
 
 <!-- JS -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ secure_asset('js/app.js') }}"></script>
 <script>
     document.getElementById('orderForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Cegah submit form
